@@ -104,11 +104,10 @@ export const Hero: React.FC = () => {
       {/* Bottom Background Layer (persistent) */}
       <div
         ref={bottomBgRef}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-[65%_center] md:bg-center"
         style={{
           backgroundImage: `url(${BACKGROUNDS[0]})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           cursor: 'none',
         }}
@@ -117,43 +116,41 @@ export const Hero: React.FC = () => {
       {/* Top Background Layer (animated reveal) */}
       <div
         ref={topBgRef}
-        className="absolute inset-0 z-[1]"
+        className="absolute inset-0 z-[1] bg-[65%_center] md:bg-center"
         style={{
           backgroundImage: `url(${BACKGROUNDS[1]})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           clipPath: 'circle(0% at 50% 50%)',
           cursor: 'none',
         }}
       />
 
-      <div className="container mx-auto relative z-10" style={{ cursor: 'none' }}>
+      <div className="container mx-auto relative z-10 flex flex-col items-center md:items-start md:justify-center h-full w-full" style={{ cursor: 'none' }}>
         {/* Text Content */}
-        <div ref={textRef} className="max-w-3xl">
-          <div className="overflow-hidden mb-2">
-            <h2 className="hero-text-line text-lg md:text-xl font-medium text-accent uppercase tracking-widest" style={{ cursor: 'none' }}>
+        <div ref={textRef} className="w-full max-w-4xl md:max-w-6xl px-4 md:px-0 flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="overflow-hidden mb-2 md:mb-4">
+            <h2 className="hero-text-line text-sm md:text-lg lg:text-xl font-medium text-accent uppercase tracking-[0.2em] md:tracking-widest" style={{ cursor: 'none' }}>
               Software Engineer
             </h2>
           </div>
 
-          <div className="overflow-hidden">
-            <h1 className="hero-text-line text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight text-text mb-6" style={{ cursor: 'none' }}>
-              Visions{' '}
-              <span className="inline-block relative" style={{ width: '420px', height: '1.1em', verticalAlign: 'baseline', transform: 'translateY(0.25em)' }}>
+          <div className="overflow-hidden w-full">
+            <h1 className="hero-text-line text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] md:leading-[0.9] tracking-tight text-text mb-6 md:mb-8 flex flex-col md:block items-center md:items-start" style={{ cursor: 'none' }}>
+              <span>Visions{' '}</span>
+              <span className="inline-block relative w-[4.2em] h-[1.1em] align-bottom md:align-baseline transform translate-y-[0.1em] md:translate-y-[0.25em]">
                 <TextHoverEffect text="Deserve" duration={0.3} />
               </span>
-              <br />
-              Execution.
+              <span className="block md:inline"><br className="hidden md:block" />Execution.</span>
             </h1>
           </div>
 
-          <div className="overflow-hidden">
-            <p className="hero-text-line text-lg md:text-xl text-muted max-w-2xl leading-relaxed" style={{ cursor: 'none' }}>
-              I turn complex visions into production-ready products.<br />
-              Obsessed with UX, authenticity, and building things<br />
+          <div className="overflow-hidden w-full">
+            <p className="hero-text-line text-base sm:text-lg md:text-xl text-muted max-w-xl md:max-w-2xl leading-relaxed mx-auto md:mx-0" style={{ cursor: 'none' }}>
+              I turn complex visions into production-ready products.<br className="hidden md:block" />
+              Obsessed with UX, authenticity, and building things<br className="hidden md:block" />
               that make life easier —{' '}
-              <span className="relative inline whitespace-nowrap">
+              <span className="relative inline-block md:inline whitespace-normal md:whitespace-nowrap mt-2 md:mt-0">
                 <FlipWords
                   words={["building the future.", "on my way to Google."]}
                   duration={3500}
@@ -163,12 +160,12 @@ export const Hero: React.FC = () => {
             </p>
           </div>
 
-          <div className="hero-meta mt-12 flex gap-8">
-            <button className="interactive group relative px-8 py-4 bg-text text-bg rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95" style={{ cursor: 'none' }}>
+          <div className="hero-meta mt-8 md:mt-12 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8 w-full sm:w-auto">
+            <button className="interactive group relative px-8 py-4 bg-text text-bg rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 w-full sm:w-auto" style={{ cursor: 'none' }}>
               <span className="relative z-10 font-medium">See My Work</span>
               <div className="absolute inset-0 bg-warm scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-custom-ease" />
             </button>
-            <a href="#contact" className="interactive flex items-center gap-2 text-text font-medium hover:text-accent transition-colors" style={{ cursor: 'none' }}>
+            <a href="#contact" className="interactive flex items-center justify-center gap-2 text-text font-medium hover:text-accent transition-colors w-full sm:w-auto" style={{ cursor: 'none' }}>
               Let's Connect
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
@@ -176,8 +173,8 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 hero-meta flex flex-col items-center gap-2 z-10" style={{ cursor: 'none' }}>
+      {/* Scroll Indicator - hide on short screens or small mobiles if needed, but keep for now */}
+      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 hero-meta flex flex-col items-center gap-2 z-10 hidden sm:flex" style={{ cursor: 'none' }}>
         <span className="text-xs text-muted tracking-widest uppercase">Scroll</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-text to-transparent opacity-30"></div>
       </div>
