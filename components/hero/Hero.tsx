@@ -15,8 +15,47 @@ export const Hero: React.FC = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const topBgRef = useRef<HTMLDivElement>(null);
   const bottomBgRef = useRef<HTMLDivElement>(null);
-  const currentBgIndexRef = useRef(0);
+
+  // Initialize from localStorage or default to 0
+  const [currentBgIndex, setCurrentBgIndex] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('hero-bg-index');
+      return saved ? parseInt(saved, 10) : 0;
+    }
+    return 0;
+  });
+
+  const currentBgIndexRef = useRef(currentBgIndex);
   const animationRef = useRef<gsap.core.Tween | null>(null);
+
+  // Sync ref with state
+  useEffect(() => {
+    currentBgIndexRef.current = currentBgIndex;
+    localStorage.setItem('hero-bg-index', currentBgIndex.toString());
+  }, [currentBgIndex]);
+
+  // Preload images
+  useEffect(() => {
+    BACKGROUNDS.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Set initial background images (Only once on mount/state init via ref to avoid React render conflicts)
+  useEffect(() => {
+    const bottomBg = bottomBgRef.current;
+    const topBg = topBgRef.current;
+
+    if (bottomBg && topBg) {
+      // Set initial styles based on saved index
+      const currentIndex = currentBgIndexRef.current;
+      const nextIndex = (currentIndex + 1) % BACKGROUNDS.length;
+
+      bottomBg.style.backgroundImage = `url(${BACKGROUNDS[currentIndex]})`;
+      topBg.style.backgroundImage = `url(${BACKGROUNDS[nextIndex]})`;
+    }
+  }, []); // Run once on mount to set initial DOM state
 
   // Handle click to trigger radial reveal from click position - NO BLOCKING
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -49,27 +88,35 @@ export const Hero: React.FC = () => {
 
       // Get next background index (cycle through 0 → 1 → 2 → 0 → ...)
       const nextBgIndex = (currentBgIndexRef.current + 1) % BACKGROUNDS.length;
-      const nextImage = BACKGROUNDS[nextBgIndex];
-      const currentImage = BACKGROUNDS[currentBgIndexRef.current];
+      const nextImage = BACKGROUNDS[nextBgIndex]; // The image we are revealing
+      const currentImage = BACKGROUNDS[currentBgIndexRef.current]; // The image currently visible
 
-      // Update bottom layer to current before animating
+      // Ensure bottom layer is the current visible image
       bottomBg.style.backgroundImage = `url(${currentImage})`;
 
-      // Set the top layer to the NEW image (starting hidden)
+      // Prepare top layer with the NEW image (starting hidden at click pos)
       topBg.style.backgroundImage = `url(${nextImage})`;
-      topBg.style.clipPath = `circle(0% at ${xPercent}% ${yPercent}%)`;
+      gsap.set(topBg, { clipPath: `circle(0% at ${xPercent}% ${yPercent}%)` });
 
-      // Update index immediately for next click
-      currentBgIndexRef.current = nextBgIndex;
+      // Update index immediately for next click logic & dots
+      setCurrentBgIndex(nextBgIndex);
 
-      // Animate radial reveal from click position - always expand outward
+      // Animate radial reveal from click position
       animationRef.current = gsap.to(topBg, {
         clipPath: `circle(200% at ${xPercent}% ${yPercent}%)`,
-        duration: 2.5,
+        duration: 1.5,
         ease: 'power2.out',
         onComplete: () => {
-          // After animation, update the bottom layer to match
+          // After animation, make the bottom layer the new image
+          // so it persists behind the next reveal
           bottomBg.style.backgroundImage = `url(${nextImage})`;
+
+          // Preload/Setup top layer for *next* interaction (optional, but good for logic)
+          // Actually, we don't strictly need to set topBg here because handleClick sets it,
+          // but keeping them consistent is fine.
+          const nextNextIndex = (nextBgIndex + 1) % BACKGROUNDS.length;
+          topBg.style.backgroundImage = `url(${BACKGROUNDS[nextNextIndex]})`;
+          gsap.set(topBg, { clipPath: 'circle(0% at 50% 50%)' }); // Reset clip
         }
       });
     }
@@ -100,13 +147,17 @@ export const Hero: React.FC = () => {
       className="relative h-screen flex items-center justify-center px-6 overflow-hidden pt-20"
       style={{ cursor: 'none', willChange: 'transform' }}
       onClick={handleClick}
+      data-cursor="TAP ME"
+      data-cursor-type="hero"
+      data-hero-index={currentBgIndex}
+      data-total-images={BACKGROUNDS.length}
     >
       {/* Bottom Background Layer (persistent) */}
       <div
         ref={bottomBgRef}
         className="absolute inset-0 z-0 bg-[65%_center] md:bg-center"
         style={{
-          backgroundImage: `url(${BACKGROUNDS[0]})`,
+          // backgroundImage removed here to prevent React overrides
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           cursor: 'none',
@@ -118,7 +169,7 @@ export const Hero: React.FC = () => {
         ref={topBgRef}
         className="absolute inset-0 z-[1] bg-[65%_center] md:bg-center"
         style={{
-          backgroundImage: `url(${BACKGROUNDS[1]})`,
+          // backgroundImage removed here to prevent React overrides
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           clipPath: 'circle(0% at 50% 50%)',

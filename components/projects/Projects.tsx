@@ -11,7 +11,10 @@ export const Projects: React.FC = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
 
-  const [revealKey, setRevealKey] = useState(0);
+  /* 
+     Removed revealKey state to prevent background reset on scroll.
+     The background will now remain persistent and consistent.
+  */
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -25,9 +28,8 @@ export const Projects: React.FC = () => {
           start: 'top top',
           // Reduced multiplier from 8 to 6 to make it "a little bit shorter"
           end: () => `+=${containerRef.current ? containerRef.current.offsetWidth * 6 : 4000}`,
-          onEnter: () => {
-            setRevealKey((prev) => prev + 1);
-          },
+
+          // onEnter removed to prevent reset
         }
       });
 
@@ -62,7 +64,6 @@ export const Projects: React.FC = () => {
       {/* Canvas Reveal Effect Background - Resets on section entry */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <CanvasRevealEffect
-          key={revealKey}
           animationSpeed={3}
           containerClassName="bg-black"
           colors={[
