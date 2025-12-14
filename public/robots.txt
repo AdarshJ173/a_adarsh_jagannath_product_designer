@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adarsh-jagannath.vercel.app/sitemap.xml
