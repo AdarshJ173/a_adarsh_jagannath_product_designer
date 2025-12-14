@@ -111,9 +111,14 @@ export const Navbar: React.FC = () => {
               <span className={`absolute -bottom-1 left-0 w-0 h-[1px] transition-all duration-300 group-hover:w-full ${isProjectsSection ? 'bg-white' : 'bg-accent'}`}></span>
             </a>
           ))}
-          <button className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent transition-colors">
-            Let's Talk
-          </button>
+          <a
+            href="https://drive.google.com/file/d/14bh1YR_Mmt1WWg9iaFTkARmy9xXtr2_S/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent transition-colors"
+          >
+            Resume
+          </a>
         </div>
 
         {/* Empty spacer to maintain layout */}
