@@ -4,7 +4,10 @@ export interface Project {
   category: string;
   description: string;
   image: string;
+  video?: string; // Optional video to display instead of image
   year: string;
+  link?: string; // Optional external link for "Visit Site" action
+  status?: string; // Optional status like "Under Development"
 }
 
 export interface Experience {

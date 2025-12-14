@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 export const Navbar: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isProjectsSection, setIsProjectsSection] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,12 +19,34 @@ export const Navbar: React.FC = () => {
         progress = Math.min(1, (window.scrollY - fadeStart) / (fadeEnd - fadeStart));
       }
       setScrollProgress(progress);
+
+      // Check if we are in the Projects section
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        const rect = projectsSection.getBoundingClientRect();
+        // Check if projects section overlaps with the navbar area (top part of screen)
+        // Using 100px threshold to ensure smooth transition
+        setIsProjectsSection(rect.top <= 100 && rect.bottom >= 100);
+      }
     };
+
+    // Initial check
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isScrolled = scrollProgress > 0.1;
+
+  // dynamic styles overrides for projects section
+  const projectsStyleOverride = isProjectsSection ? {
+    backgroundColor: 'transparent',
+    backdropFilter: 'none',
+    WebkitBackdropFilter: 'none',
+    borderBottom: 'none',
+    boxShadow: 'none',
+  } : {};
 
   return (
     <nav
@@ -41,11 +64,12 @@ export const Navbar: React.FC = () => {
         boxShadow: scrollProgress > 0.5
           ? `0 4px 30px rgba(0, 0, 0, ${scrollProgress * 0.05})`
           : 'none',
+        ...projectsStyleOverride
       }}
     >
       <div className="container mx-auto px-6 flex items-center relative">
         {/* Animated Logo: AAJ -> A.Adarsh Jagannath - stays on left */}
-        <a href="#" className="group flex items-center text-xl font-bold tracking-tight text-text cursor-pointer select-none">
+        <a href="#" className={`group flex items-center text-xl font-bold tracking-tight cursor-pointer select-none transition-colors duration-300 ${isProjectsSection ? 'text-white' : 'text-text'}`}>
           <span>A</span>
           {/* Hidden Dot and 'darsh' reveal */}
           <span className="max-w-0 overflow-hidden group-hover:max-w-[0.6em] group-hover:opacity-100 opacity-0 transition-all duration-700 ease-custom-ease text-accent">.</span>
@@ -58,7 +82,7 @@ export const Navbar: React.FC = () => {
           {/* 'agannath' reveal */}
           <span className="max-w-0 overflow-hidden group-hover:max-w-[5.5em] group-hover:opacity-100 opacity-0 transition-all duration-700 ease-custom-ease whitespace-nowrap">agannath</span>
 
-          <span className="text-accent group-hover:text-text transition-colors duration-500">.</span>
+          <span className={`transition-colors duration-500 ${isProjectsSection ? 'text-white' : 'text-accent group-hover:text-text'}`}>.</span>
         </a>
 
         {/* Centered Navigation Links */}
@@ -67,10 +91,13 @@ export const Navbar: React.FC = () => {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="interactive text-sm font-medium text-text/70 hover:text-text transition-colors relative group"
+              className={`interactive text-sm font-medium transition-colors relative group ${isProjectsSection
+                  ? 'text-white/80 hover:text-white'
+                  : 'text-text/70 hover:text-text'
+                }`}
             >
               {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent transition-all duration-300 group-hover:w-full"></span>
+              <span className={`absolute -bottom-1 left-0 w-0 h-[1px] transition-all duration-300 group-hover:w-full ${isProjectsSection ? 'bg-white' : 'bg-accent'}`}></span>
             </a>
           ))}
           <button className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent transition-colors">
@@ -82,7 +109,7 @@ export const Navbar: React.FC = () => {
         <div className="hidden md:block flex-1"></div>
 
         {/* Mobile Menu Icon */}
-        <div className="md:hidden ml-auto">
+        <div className={`md:hidden ml-auto ${isProjectsSection ? 'text-white' : 'text-text'}`}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </div>
       </div>
