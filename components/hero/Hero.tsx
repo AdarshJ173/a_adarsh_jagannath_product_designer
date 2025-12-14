@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
+import { TextHoverEffect } from '@/components/ui/text-hover-effect';
+import { FlipWords } from '@/components/ui/flip-words';
 
 // Background images in cycle order
 const BACKGROUNDS = [
@@ -95,8 +97,8 @@ export const Hero: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden pt-20"
-      style={{ cursor: 'none' }}
+      className="relative h-screen flex items-center justify-center px-6 overflow-hidden pt-20"
+      style={{ cursor: 'none', willChange: 'transform' }}
       onClick={handleClick}
     >
       {/* Bottom Background Layer (persistent) */}
@@ -131,30 +133,43 @@ export const Hero: React.FC = () => {
         <div ref={textRef} className="max-w-3xl">
           <div className="overflow-hidden mb-2">
             <h2 className="hero-text-line text-lg md:text-xl font-medium text-accent uppercase tracking-widest" style={{ cursor: 'none' }}>
-              Digital Product Designer
+              Software Engineer
             </h2>
           </div>
 
           <div className="overflow-hidden">
             <h1 className="hero-text-line text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight text-text mb-6" style={{ cursor: 'none' }}>
-              Crafting <span className="font-serif italic text-muted">Digital</span> <br />
-              Experiences.
+              Visions{' '}
+              <span className="inline-block relative" style={{ width: '420px', height: '1.1em', verticalAlign: 'baseline', transform: 'translateY(0.25em)' }}>
+                <TextHoverEffect text="Deserve" duration={0.3} />
+              </span>
+              <br />
+              Execution.
             </h1>
           </div>
 
           <div className="overflow-hidden">
-            <p className="hero-text-line text-lg md:text-xl text-muted max-w-lg leading-relaxed" style={{ cursor: 'none' }}>
-              I blend aesthetics with functional psychology to build products that feel inevitable. Currently reshaping fintech at Studio Warp.
+            <p className="hero-text-line text-lg md:text-xl text-muted max-w-2xl leading-relaxed" style={{ cursor: 'none' }}>
+              I turn complex visions into production-ready products.<br />
+              Obsessed with UX, authenticity, and building things<br />
+              that make life easier —{' '}
+              <span className="relative inline whitespace-nowrap">
+                <FlipWords
+                  words={["building the future.", "on my way to Google."]}
+                  duration={3500}
+                  className="text-accent font-medium !inline"
+                />
+              </span>
             </p>
           </div>
 
           <div className="hero-meta mt-12 flex gap-8">
             <button className="interactive group relative px-8 py-4 bg-text text-bg rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95" style={{ cursor: 'none' }}>
-              <span className="relative z-10 font-medium">View Projects</span>
+              <span className="relative z-10 font-medium">See My Work</span>
               <div className="absolute inset-0 bg-warm scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-custom-ease" />
             </button>
             <a href="#contact" className="interactive flex items-center gap-2 text-text font-medium hover:text-accent transition-colors" style={{ cursor: 'none' }}>
-              Get in Touch
+              Let's Connect
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>

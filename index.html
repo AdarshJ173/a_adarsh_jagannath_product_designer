@@ -1,72 +1,125 @@
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/lucide:pen-tool.svg?color=%23121212" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>A.Adarsh Jagannath | Product Designer</title>
-    
-    <!-- Fonts: Inter and Satoshi (simulated with standard sans stack for stability) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-            },
-            colors: {
-              bg: '#FAFAFA',
-              surface: '#F0F0F0',
-              text: '#121212',
-              muted: '#A0A0A0',
-              accent: '#A8B5A2', // Muted Sage
-              warm: '#D8D0C5',
-            },
-            transitionTimingFunction: {
-              'custom-ease': 'cubic-bezier(0.16, 1, 0.3, 1)',
-            }
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/lucide:pen-tool.svg?color=%23121212" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A.Adarsh Jagannath | Product Designer</title>
+
+  <!-- CRITICAL: Lock scroll position before ANY framework code loads -->
+  <script>
+    // Immediately force scroll to top before anything else runs
+    (function () {
+      // Lock scroll restoration
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
+      // Force scroll to top immediately
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      if (document.body) {
+        document.body.scrollTop = 0;
+      }
+
+      // Keep forcing scroll to top during page load
+      var scrollLockInterval = setInterval(function () {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        if (document.body) {
+          document.body.scrollTop = 0;
+        }
+      }, 10);
+
+      // Stop forcing after page is fully loaded
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          clearInterval(scrollLockInterval);
+        }, 2000); // Keep locked for 2 seconds after load to ensure animations complete
+      });
+    })();
+  </script>
+
+  <!-- Fonts: Inter and Satoshi (simulated with standard sans stack for stability) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            bg: '#FAFAFA',
+            surface: '#F0F0F0',
+            text: '#121212',
+            muted: '#A0A0A0',
+            accent: '#A8B5A2', // Muted Sage
+            warm: '#D8D0C5',
+          },
+          transitionTimingFunction: {
+            'custom-ease': 'cubic-bezier(0.16, 1, 0.3, 1)',
           }
         }
       }
-    </script>
-    <style>
-      body {
-        background-color: #FAFAFA;
-        color: #121212;
-        overflow-x: hidden;
-      }
-      /* Hide scrollbar for clean look */
-      ::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-      }
-      .lenis.lenis-smooth {
-        scroll-behavior: auto !important;
-      }
-      .lenis.lenis-smooth [data-lenis-prevent] {
-        overscroll-behavior: contain;
-      }
-      .lenis.lenis-stopped {
-        overflow: hidden;
-      }
-      .lenis.lenis-scrolling iframe {
-        pointer-events: none;
-      }
+    }
+  </script>
+  <style>
+    html {
+      scroll-behavior: auto !important;
+    }
 
-      /* Hide default cursor on devices that support hover (Desktop) */
-      @media (hover: hover) and (pointer: fine) {
-        body, a, button, input, textarea, select, [role="button"] {
-          cursor: none !important;
-        }
+    body {
+      background-color: #FAFAFA;
+      color: #121212;
+      overflow-x: hidden;
+    }
+
+    /* Hide scrollbar for clean look */
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
+    .lenis.lenis-scrolling iframe {
+      pointer-events: none;
+    }
+
+    /* Hide default cursor on devices that support hover (Desktop) */
+    @media (hover: hover) and (pointer: fine) {
+
+      body,
+      a,
+      button,
+      input,
+      textarea,
+      select,
+      [role="button"] {
+        cursor: none !important;
       }
-    </style>
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -79,10 +132,12 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
+
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>
