@@ -1,0 +1,57 @@
+import React, { useState, useEffect } from 'react';
+
+export const Navbar: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'py-4 bg-bg/80 backdrop-blur-md border-b border-muted/10' : 'py-8 bg-transparent'}`}>
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        {/* Animated Logo: AAJ -> A.Adarsh Jagannath */}
+        <a href="#" className="group flex items-center text-xl font-bold tracking-tight text-text cursor-pointer select-none">
+          <span>A</span>
+          {/* Hidden Dot and 'darsh' reveal */}
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[0.6em] group-hover:opacity-100 opacity-0 transition-all duration-700 ease-custom-ease text-accent">.</span>
+          <span>A</span>
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[3.2em] group-hover:opacity-100 opacity-0 transition-all duration-700 ease-custom-ease whitespace-nowrap">darsh</span>
+          
+          {/* Spacer for 'J' */}
+          <span className="group-hover:ml-[0.3em] transition-all duration-700 ease-custom-ease">J</span>
+          
+          {/* 'agannath' reveal */}
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[5.5em] group-hover:opacity-100 opacity-0 transition-all duration-700 ease-custom-ease whitespace-nowrap">agannath</span>
+          
+          <span className="text-accent group-hover:text-text transition-colors duration-500">.</span>
+        </a>
+
+        <div className="hidden md:flex gap-8 items-center">
+          {['About', 'Projects', 'Contact'].map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`}
+              className="interactive text-sm font-medium text-text/70 hover:text-text transition-colors relative group"
+            >
+              {item}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          ))}
+          <button className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent transition-colors">
+            Let's Talk
+          </button>
+        </div>
+        
+        {/* Mobile Menu Icon */}
+        <div className="md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </div>
+      </div>
+    </nav>
+  );
+};
