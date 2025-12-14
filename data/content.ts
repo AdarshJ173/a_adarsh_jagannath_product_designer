@@ -37,19 +37,20 @@ export const PROJECTS: Project[] = [
 
 export const EXPERIENCE: Experience[] = [
   {
-    role: "Senior Product Designer",
-    company: "Studio Warp",
-    period: "2023 - Present",
-    desc: "Leading design systems and interaction patterns for global fintech clients."
+    role: "App Developer Intern",
+    company: "Remote Startup",
+    period: "2025 - Present",
+    desc: "Building mobile experiences that matter. Shipping features at startup speed."
   },
   {
-    role: "UI/UX Designer",
-    company: "Neo Agency",
-    period: "2021 - 2023",
-    desc: "Crafted award-winning marketing sites and mobile applications."
+    role: "Freelance Developer",
+    company: "Self-Employed",
+    period: "2024 - Present",
+    desc: "Web & mobile development for clients across productivity, healthcare, and education."
   }
 ];
 
 export const SKILLS: string[] = [
-  "Figma", "Prototyping", "Design Systems", "Webflow", "React/Next.js", "Motion (GSAP)"
+  "React", "React Native", "TypeScript", "JavaScript", "Node.js", "Python",
+  "DSA", "System Design", "Figma", "Firebase", "Git"
 ];
