@@ -5,9 +5,9 @@ import { FlipWords } from '@/components/ui/flip-words';
 
 // Background images in cycle order
 const BACKGROUNDS = [
-  '/assets/lpg.png',
-  '/assets/frontAuraR.png',
-  '/assets/rpngFix.png',
+  '/assets/lpg_opt.webp',
+  '/assets/frontAuraR_opt.webp',
+  '/assets/rpngFix_opt.webp',
 ];
 
 export const Hero: React.FC = () => {
