@@ -212,10 +212,10 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="hero-meta mt-8 md:mt-12 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 md:gap-8 w-full sm:w-auto">
-            <button className="interactive group relative px-8 py-4 bg-text text-bg rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 w-full sm:w-auto" style={{ cursor: 'none' }}>
+            <a href="#projects" className="interactive group relative px-8 py-4 bg-text text-bg rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 w-full sm:w-auto flex items-center justify-center" style={{ cursor: 'none' }}>
               <span className="relative z-10 font-medium">See My Work</span>
               <div className="absolute inset-0 bg-warm scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 ease-custom-ease" />
-            </button>
+            </a>
             <a href="#contact" className="interactive flex items-center justify-center gap-2 text-text font-medium hover:text-accent transition-colors w-full sm:w-auto" style={{ cursor: 'none' }}>
               Let's Connect
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
