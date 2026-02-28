@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import { EXPERIENCE, SKILLS } from '../../data/content';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { BackgroundBeams } from '../ui/background-beams';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,9 +28,6 @@ export const About: React.FC = () => {
 
   return (
     <section ref={sectionRef} className="py-32 px-6 bg-surface relative overflow-hidden">
-      {/* Background Beams Effect */}
-      <BackgroundBeams className="opacity-40" />
-
       <div className="container mx-auto relative z-10">
         <div className="mb-16 md:mb-24 max-w-3xl">
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-text">How I Think</h2>
