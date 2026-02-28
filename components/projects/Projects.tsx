@@ -24,31 +24,24 @@ export const Projects: React.FC = () => {
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
-          scrub: 1,
+          scrub: 0.3,
           start: 'top top',
-          // Reduced multiplier from 8 to 6 to make it "a little bit shorter"
-          end: () => `+=${containerRef.current ? containerRef.current.offsetWidth * 6 : 4000}`,
-
-          // onEnter removed to prevent reset
+          end: () => `+=${containerRef.current ? containerRef.current.offsetWidth * 3 : 2500}`,
         }
       });
 
       sections.forEach((_, index) => {
-        // For every project except the last one (which is the destination)
         if (index < sections.length - 1) {
-          // 1. HOLD: Stay on the current project for a "sticky" duration
-          // This ensures "even if I scroll let the 1st project be like without scrolling"
           tl.to(sections, {
             xPercent: -100 * index,
-            duration: 2, // 2 units of time holding
+            duration: 0.5,
             ease: "none"
           });
 
-          // 2. MOVE: Transition to the next project
           tl.to(sections, {
             xPercent: -100 * (index + 1),
-            duration: 1, // 1 unit of time moving
-            ease: "power2.inOut" // Smooth transition
+            duration: 0.8,
+            ease: "power2.inOut"
           });
         }
       });
@@ -64,7 +57,7 @@ export const Projects: React.FC = () => {
       {/* Canvas Reveal Effect Background - Resets on section entry */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <CanvasRevealEffect
-          animationSpeed={3}
+          animationSpeed={1}
           containerClassName="bg-black"
           colors={[
             [59, 130, 246],
