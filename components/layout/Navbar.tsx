@@ -67,27 +67,17 @@ export const Navbar: React.FC = () => {
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-8'}`}
         style={{
           // Translucent liquid glass effect - light frosted glass with subtle tint
-          backgroundColor: (isProjectsSection || isContactSection)
-            ? 'transparent'
-            : scrollProgress > 0
-              ? `rgba(255, 255, 255, ${scrollProgress * 0.08})`
-              : 'transparent',
-          backdropFilter: (isProjectsSection || isContactSection)
-            ? 'none'
-            : scrollProgress > 0 ? `blur(${scrollProgress * 16}px) saturate(${1 + scrollProgress * 0.5})` : 'none',
-          WebkitBackdropFilter: (isProjectsSection || isContactSection)
-            ? 'none'
-            : scrollProgress > 0 ? `blur(${scrollProgress * 16}px) saturate(${1 + scrollProgress * 0.5})` : 'none',
-          borderBottom: (isProjectsSection || isContactSection)
-            ? 'none'
-            : scrollProgress > 0.3
-              ? `1px solid rgba(255, 255, 255, ${scrollProgress * 0.1})`
-              : 'none',
-          boxShadow: (isProjectsSection || isContactSection)
-            ? 'none'
-            : scrollProgress > 0.5
-              ? `0 4px 30px rgba(0, 0, 0, ${scrollProgress * 0.05})`
-              : 'none',
+           backgroundColor: scrollProgress > 0
+             ? `rgba(255, 255, 255, ${scrollProgress * 0.08})`
+             : 'transparent',
+           backdropFilter: scrollProgress > 0 ? `blur(${scrollProgress * 16}px) saturate(${1 + scrollProgress * 0.5})` : 'none',
+           WebkitBackdropFilter: scrollProgress > 0 ? `blur(${scrollProgress * 16}px) saturate(${1 + scrollProgress * 0.5})` : 'none',
+           borderBottom: scrollProgress > 0.3
+             ? `1px solid rgba(255, 255, 255, ${scrollProgress * 0.1})`
+             : 'none',
+           boxShadow: scrollProgress > 0.5
+             ? `0 4px 30px rgba(0, 0, 0, ${scrollProgress * 0.05})`
+             : 'none',
         }}
       >
         <div className="container mx-auto px-6 flex items-center relative">

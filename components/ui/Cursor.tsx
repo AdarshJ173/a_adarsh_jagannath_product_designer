@@ -4,6 +4,7 @@ import gsap from 'gsap';
 export const Cursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorTextRef = useRef<HTMLSpanElement>(null);
+  const cursorDotRef = useRef<HTMLSpanElement>(null);
   const dotsContainerRef = useRef<HTMLDivElement>(null);
   const [activeDotIndex, setActiveDotIndex] = useState(0);
 
@@ -19,9 +20,10 @@ export const Cursor: React.FC = () => {
     // Initial Setup
     const cursor = cursorRef.current;
     const cursorText = cursorTextRef.current;
+    const cursorDot = cursorDotRef.current;
     const dotsContainer = dotsContainerRef.current;
 
-    if (!cursor || !cursorText || !dotsContainer) return;
+    if (!cursor || !cursorText || !cursorDot || !dotsContainer) return;
 
     // Center cursor initially
     gsap.set(cursor, { xPercent: -50, yPercent: -50 });
@@ -71,7 +73,7 @@ export const Cursor: React.FC = () => {
       }
 
       if (cursorType === 'hero') {
-        // Hero Mode
+        // Hero Mode - show TAP ME text and dot indicator
         cursorText.textContent = text || 'TAP ME';
         updateDots(target); // Initial sync
 
@@ -85,42 +87,44 @@ export const Cursor: React.FC = () => {
         });
         observerRef.current.observe(target, { attributes: true });
 
-        // Animate to Hero State
+        // Animate to Hero State - minimalist approach
         gsap.to(cursor, {
-          width: 120, // Larger for text + dots
-          height: 120,
-          backgroundColor: '#F0F0F0',
-          borderRadius: '50%',
-          duration: 0.4,
-          ease: 'power3.out'
+          width: 24, // Smaller size
+          height: 24,
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          duration: 0.3,
+          ease: 'power2.out'
         });
-        gsap.to(cursorText, { opacity: 1, scale: 1, y: -10, duration: 0.3 }); // Move text up slightly
-        gsap.to(dotsContainer, { opacity: 1, scale: 1, display: 'flex', duration: 0.3, delay: 0.1 });
+        gsap.to(cursorText, { opacity: 1, y: -20, duration: 0.3 }); // Text above cursor
+        gsap.to(cursorDot, { opacity: 0 }); // Hide main dot
+        gsap.to(dotsContainer, { opacity: 1, scale: 1, duration: 0.3 }); // Show indicator dots
 
       } else if (text) {
         // Standard Text Hover (like Project View)
         cursorText.textContent = text;
         gsap.to(cursor, {
-          width: 100,
-          height: 100,
-          backgroundColor: '#F0F0F0',
-          duration: 0.4,
-          ease: 'power3.out'
+          width: 20,
+          height: 20,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          duration: 0.3,
+          ease: 'power2.out'
         });
-        gsap.to(cursorText, { opacity: 1, scale: 1, y: 0, duration: 0.3 });
-        gsap.to(dotsContainer, { opacity: 0, scale: 0, display: 'none', duration: 0.2 });
+        gsap.to(cursorText, { opacity: 1, y: -20, duration: 0.3 });
+        gsap.to(cursorDot, { opacity: 0 });
+        gsap.to(dotsContainer, { opacity: 0, scale: 0, duration: 0.2 });
       } else if (isInteractive) {
-        // Standard Interactive (Button/Link)
+        // Standard Interactive (Button/Link) - subtle enhancement
         cursorText.textContent = '';
         gsap.to(cursor, {
-          width: 60,
-          height: 60,
-          backgroundColor: '#FFFFFF',
-          duration: 0.4,
-          ease: 'power3.out'
+          width: 16,
+          height: 16,
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          duration: 0.3,
+          ease: 'power2.out'
         });
-        gsap.to(cursorText, { opacity: 0, scale: 0, duration: 0.3 });
-        gsap.to(dotsContainer, { opacity: 0, scale: 0, display: 'none', duration: 0.2 });
+        gsap.to(cursorText, { opacity: 0, duration: 0.2 });
+        gsap.to(cursorDot, { opacity: 0 });
+        gsap.to(dotsContainer, { opacity: 0, scale: 0, duration: 0.2 });
       }
     };
 
@@ -131,16 +135,17 @@ export const Cursor: React.FC = () => {
         observerRef.current = null;
       }
 
-      // Reset to default dot
+      // Reset to default state - minimal dot
       gsap.to(cursor, {
-        width: 12,
-        height: 12,
-        backgroundColor: '#FFFFFF',
-        duration: 0.4,
-        ease: 'power3.out'
+        width: 8,
+        height: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
+        duration: 0.3,
+        ease: 'power2.out'
       });
-      gsap.to(cursorText, { opacity: 0, scale: 0, duration: 0.3 });
-      gsap.to(dotsContainer, { opacity: 0, scale: 0, display: 'none', duration: 0.2 });
+      gsap.to(cursorText, { opacity: 0, duration: 0.2 });
+      gsap.to(cursorDot, { opacity: 1, scale: 1, duration: 0.3 }); // Show main dot
+      gsap.to(dotsContainer, { opacity: 0, scale: 0, duration: 0.2 });
     };
 
     const onMouseDown = () => {
@@ -148,7 +153,7 @@ export const Cursor: React.FC = () => {
     };
 
     const onMouseUp = () => {
-      gsap.to(cursor, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.3)' });
+      gsap.to(cursor, { scale: 1, duration: 0.3, ease: 'elastic.out(1, 0.3)' });
     };
 
     window.addEventListener('mousemove', onMouseMove);
@@ -189,24 +194,31 @@ export const Cursor: React.FC = () => {
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 w-3 h-3 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference flex flex-col items-center justify-center overflow-hidden hidden md:flex"
+      className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference flex flex-col items-center justify-center overflow-hidden hidden md:flex"
       style={{ willChange: 'transform, width, height' }}
     >
+      {/* Main cursor dot */}
+      <span
+        ref={cursorDotRef}
+        className="w-full h-full bg-white rounded-full"
+      ></span>
+      
+      {/* Text label */}
       <span
         ref={cursorTextRef}
-        className="text-[10px] font-bold text-black uppercase tracking-widest opacity-0 scale-0 mb-1"
+        className="text-[9px] font-medium text-black uppercase tracking-wider opacity-0 -mt-2"
       >
       </span>
 
-      {/* Dots Container */}
+      {/* Indicator dots for hero section */}
       <div
         ref={dotsContainerRef}
-        className="flex gap-1.5 opacity-0 hidden"
+        className="flex space-x-1 mt-2 opacity-0"
       >
         {[0, 1, 2].map((idx) => (
           <div
             key={idx}
-            className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${activeDotIndex === idx ? 'bg-[#00ff41]' : 'bg-black/30'}`} // Neon green for active, subtle black for inactive (contrast against white cursor bg)
+            className={`w-1 h-1 rounded-full transition-colors duration-200 ${activeDotIndex === idx ? 'bg-white' : 'bg-white/30'}`}
           />
         ))}
       </div>
