@@ -107,40 +107,6 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap"
     rel="stylesheet">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          },
-          colors: {
-            bg: '#FAFAFA',
-            surface: '#F0F0F0',
-            text: '#121212',
-            muted: '#A0A0A0',
-            accent: '#A8B5A2', // Muted Sage
-            warm: '#D8D0C5',
-          },
-          transitionTimingFunction: {
-            'custom-ease': 'cubic-bezier(0.16, 1, 0.3, 1)',
-          },
-          keyframes: {
-            'shine': {
-              '0%': { 'background-position': '200% center' },
-              '100%': { 'background-position': '-200% center' },
-            }
-          },
-          animation: {
-            'shine': 'shine 8s linear infinite',
-          }
-        }
-      }
-    }
-  </script>
   <style>
     html {
       scroll-behavior: auto !important;
@@ -200,8 +166,7 @@
   }
 }
 </script>
-  <link rel="stylesheet" href="/index.css">
-</head>
+  </head>
 
 <body>
   <div id="root"></div>
