@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { TextHoverEffect } from '@/components/ui/text-hover-effect';
 import { FlipWords } from '@/components/ui/flip-words';
-import PixelSnow from '@/components/ui/PixelSnow';
+import Dither from '@/components/ui/Dither';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,27 +33,29 @@ export const Hero: React.FC = () => {
       className="relative h-screen flex items-center justify-center px-6 overflow-hidden pt-20"
       style={{ cursor: 'none', willChange: 'transform' }}
     >
+      {/* Dither Background Effect (behind the image) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <Dither
+          bgColor={[0.98, 0.98, 0.98]}
+          waveColor={[0.85, 0.82, 0.77]}
+          disableAnimation={false}
+          enableMouseInteraction={true}
+          mouseRadius={0.4}
+          colorNum={4}
+          waveAmplitude={0.35}
+          waveFrequency={3.5}
+          waveSpeed={0.04}
+        />
+      </div>
+
       {/* Background Image Layer */}
       <div
-        className="absolute inset-0 z-0 bg-[65%_center] md:bg-center"
+        className="absolute inset-0 z-[1] bg-[65%_center] md:bg-center pointer-events-none"
         style={{
           backgroundImage: "url('/assets/hero_bg.png')",
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
         }}
-      />
-
-      {/* Pixel Snow Particle Background */}
-      <PixelSnow 
-        color="#121212"
-        flakeSize={0.012}
-        minFlakeSize={1.5}
-        pixelResolution={220}
-        speed={1.0}
-        density={0.25}
-        direction={125}
-        brightness={1}
-        className="z-[1] pointer-events-none"
       />
 
       <div className="container mx-auto relative z-10 flex flex-col items-center md:items-start md:justify-center h-full w-full" style={{ cursor: 'none' }}>
