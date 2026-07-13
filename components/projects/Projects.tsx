@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from '../../data/content';
@@ -10,82 +10,115 @@ export const Projects: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-
-  /* 
-     Removed revealKey state to prevent background reset on scroll.
-     The background will now remain persistent and consistent.
-  */
-
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const sections = gsap.utils.toArray<HTMLElement>('.project-panel');
+      const panels = gsap.utils.toArray<HTMLElement>('.project-panel');
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,
-          scrub: 0.3,
-          start: 'top top',
-          end: () => `+=${containerRef.current ? containerRef.current.offsetWidth * 3 : 2500}`,
+      panels.forEach((panel) => {
+        const info = panel.querySelector('.project-info');
+        const image = panel.querySelector('.project-image');
+        const number = panel.querySelector('.project-number');
+
+        if (number) {
+          gsap.fromTo(number,
+            { y: 50, opacity: 0 },
+            {
+              y: 0,
+              opacity: 0.75,
+              duration: 1.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: panel,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+              }
+            }
+          );
         }
-      });
 
-      sections.forEach((_, index) => {
-        if (index < sections.length - 1) {
-          tl.to(sections, {
-            xPercent: -100 * index,
-            duration: 0.5,
-            ease: "none"
-          });
+        if (info) {
+          gsap.fromTo(info,
+            { y: 60, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: panel,
+                start: 'top 75%',
+                toggleActions: 'play none none reverse'
+              }
+            }
+          );
+        }
 
-          tl.to(sections, {
-            xPercent: -100 * (index + 1),
-            duration: 0.8,
-            ease: "power2.inOut"
-          });
+        if (image) {
+          gsap.fromTo(image,
+            { y: 100, opacity: 0, scale: 0.95 },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: panel,
+                start: 'top 65%',
+                toggleActions: 'play none none reverse'
+              }
+            }
+          );
         }
       });
 
     }, containerRef);
 
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-screen overflow-hidden text-bg">
-      {/* Canvas Reveal Effect Background - Resets on section entry */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <CanvasRevealEffect
-          animationSpeed={1}
-          containerClassName="bg-black"
-          colors={[
-            [59, 130, 246],
-            [139, 92, 246],
-          ]}
-          opacities={[0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 1]}
-          dotSize={2}
-          showGradient={false}
-        />
+    <div ref={containerRef} className="relative w-full text-bg bg-black">
+      {/* Sticky Background Container */}
+      <div className="sticky top-0 h-screen w-full z-0 pointer-events-none overflow-hidden mb-[-100vh]">
+        <div className="absolute inset-0 z-0">
+          <CanvasRevealEffect
+            animationSpeed={1}
+            containerClassName="bg-black"
+            colors={[
+              [59, 130, 246],
+              [139, 92, 246],
+            ]}
+            opacities={[0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 1]}
+            dotSize={2}
+            showGradient={false}
+          />
+        </div>
+        {/* Center radial black gradient fade */}
+        <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]" />
       </div>
-      {/* Center radial black gradient fade */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]" />
 
       <div
         ref={wrapperRef}
-        className="flex h-full w-full relative z-10"
-        style={{ width: `${PROJECTS.length * 100}%` }}
+        className="flex flex-col w-full relative z-10"
       >
         {PROJECTS.map((project, index) => (
           <div
             key={project.id}
-            className="project-panel w-screen h-full flex flex-col md:flex-row items-center justify-center p-8 md:p-20 border-r border-white/5 relative"
+            className="project-panel w-full min-h-screen flex flex-col md:flex-row items-center justify-center p-8 md:p-20 border-b border-white/5 relative overflow-hidden"
           >
-            {/* Background Number with white stroke and glow */}
+            {/* Background Number with metallic shine effects edges */}
             <div
-              className="absolute top-10 left-10 md:top-20 md:left-20 text-[10rem] md:text-[20rem] font-bold leading-none select-none text-transparent"
+              className={`project-number absolute top-10 md:top-20 text-[10rem] md:text-[20rem] font-bold leading-none select-none animate-shine ${
+                index % 2 === 0 ? 'left-10 md:left-20' : 'right-10 md:right-20'
+              }`}
               style={{
-                WebkitTextStroke: '3px rgba(255, 255, 255, 0.4)',
+                backgroundImage: 'linear-gradient(120deg, #3a3a3c 30%, #ffffff 45%, #ffffff 55%, #3a3a3c 70%)',
+                backgroundSize: '200% auto',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                WebkitTextStroke: '2.5px rgba(255, 255, 255, 0.65)',
+                filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.25))',
               }}
             >
               0{index + 1}
@@ -94,7 +127,7 @@ export const Projects: React.FC = () => {
             <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center z-10">
 
               {/* Text Info */}
-              <div className="order-2 md:order-1 space-y-6">
+              <div className={`project-info space-y-6 order-2 ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
                 <div className="flex items-center gap-4">
                   <span className="px-3 py-1 border border-white/20 rounded-full text-xs uppercase tracking-wider">{project.category}</span>
                   <span className="text-xs text-white/50">{project.year}</span>
@@ -110,7 +143,7 @@ export const Projects: React.FC = () => {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="interactive mt-8 text-accent hover:text-white transition-colors flex items-center gap-2 group"
+                    className="interactive mt-8 text-accent hover:text-white transition-colors flex items-center gap-2 group w-fit"
                     data-cursor="Open"
                   >
                     Visit Site
@@ -123,7 +156,7 @@ export const Projects: React.FC = () => {
                   </span>
                 ) : (
                   <button
-                    className="interactive mt-8 text-accent hover:text-white transition-colors flex items-center gap-2 group"
+                    className="interactive mt-8 text-accent hover:text-white transition-colors flex items-center gap-2 group w-fit"
                     data-cursor="Open"
                   >
                     View Case Study
@@ -138,7 +171,9 @@ export const Projects: React.FC = () => {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="order-1 md:order-2 relative group interactive cursor-pointer"
+                  className={`project-image order-1 relative group interactive cursor-pointer ${
+                    index % 2 === 0 ? 'md:order-2' : 'md:order-1'
+                  }`}
                   data-cursor="View"
                 >
                   <div className="relative rounded-xl shadow-2xl transform transition-transform duration-700 hover:scale-[1.02] p-[1px] overflow-hidden">
@@ -166,7 +201,9 @@ export const Projects: React.FC = () => {
                 </a>
               ) : (
                 <div
-                  className="order-1 md:order-2 relative group interactive"
+                  className={`project-image order-1 relative group interactive ${
+                    index % 2 === 0 ? 'md:order-2' : 'md:order-1'
+                  }`}
                   data-cursor="View"
                 >
                   <div className="relative rounded-xl shadow-2xl transform transition-transform duration-700 hover:scale-[1.02] p-[1px] overflow-hidden">

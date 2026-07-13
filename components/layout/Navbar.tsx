@@ -117,7 +117,7 @@ export const Navbar: React.FC = () => {
               href="https://drive.google.com/file/d/13a_HcGdcmYuMtErUUrvzEjTMp4vEDF6z/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent transition-colors"
+              className="interactive px-5 py-2 bg-text text-bg text-sm rounded-full hover:bg-accent hover:text-text transition-colors"
             >
               Resume
             </a>
@@ -161,7 +161,7 @@ export const Navbar: React.FC = () => {
             href="https://drive.google.com/file/d/13a_HcGdcmYuMtErUUrvzEjTMp4vEDF6z/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
-            className={`mt-4 px-8 py-3 bg-text text-bg text-lg rounded-full hover:bg-accent transition-all duration-500 transform ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+            className={`mt-4 px-8 py-3 bg-text text-bg text-lg rounded-full hover:bg-accent hover:text-text transition-all duration-500 transform ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
             style={{ transitionDelay: '400ms' }}
           >
             Resume

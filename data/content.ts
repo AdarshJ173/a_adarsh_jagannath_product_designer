@@ -3,6 +3,24 @@ import { Project, Experience, Skill } from '../types';
 export const PROJECTS: Project[] = [
   {
     id: 1,
+    title: "Oryan",
+    category: "AI / Productivity",
+    description: "Every Sunday, AI reads your week. Monday, you know exactly what to fix. Oryan is your personal execution OS, reading your thoughts, journals, and notes to tell you the truth about your week.",
+    year: "2025",
+    image: "/assets/oryan.png",
+    link: "https://oryan.in",
+  },
+  {
+    id: 2,
+    title: "Kami",
+    category: "AI / WebGPU",
+    description: "A local-first, privacy-focused personal AI companion that runs entirely on-device using WebGPU. Built with a 7-layer memory architecture to capture, consolidate, and retrieve your memories over time.",
+    year: "2025",
+    image: "/assets/mykami.png",
+    link: "https://mykami.in",
+  },
+  {
+    id: 3,
     title: "EmpathAI",
     category: "Mental Health / UI/UX",
     description: "A mental health web application where you can express yourself freely. It truly listens, understands you deeply, and remembers every conversation—even the smallest details—across sessions. Supporting OCD and emotional wellbeing.",
@@ -12,7 +30,7 @@ export const PROJECTS: Project[] = [
     link: "https://empath-ai-omega.vercel.app",
   },
   {
-    id: 2,
+    id: 4,
     title: "Evolve",
     category: "AI / EdTech",
     description: "A personalized AI learning platform that helps students truly understand instead of just copy-pasting. Using Socratic questioning methods, Evolve makes you think and learn rather than overwhelming you with information dumps.",
@@ -21,7 +39,7 @@ export const PROJECTS: Project[] = [
     link: "https://evolve-xi.vercel.app/",
   },
   {
-    id: 3,
+    id: 5,
     title: "Infinity Canvas",
     category: "AI Agent / EdTech",
     description: "An infinite canvas AI agent inspired by the human brain. Every thought connects like neurons—learn from videos, websites, documents, and images, then retrieve and apply that knowledge anytime, anywhere. Context-aware, personalized, and deeply interconnected.",
@@ -30,7 +48,7 @@ export const PROJECTS: Project[] = [
     status: "Under Development",
   },
   {
-    id: 4,
+    id: 6,
     title: "Most Valuable Co",
     category: "E-Commerce / Freelance",
     description: "A premium e-commerce website built for an Australian client via Fiverr. Crafted with meticulous attention to UI/UX, delivering an elevated shopping experience with a luxurious, modern aesthetic.",

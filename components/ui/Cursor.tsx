@@ -164,8 +164,11 @@ export const Cursor: React.FC = () => {
     const addListeners = () => {
       const elements = document.querySelectorAll('a, button, .interactive, [data-cursor]');
       elements.forEach(el => {
-        el.addEventListener('mouseenter', onMouseEnter);
-        el.addEventListener('mouseleave', onMouseLeave);
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.dataset.hasCursorListener === 'true') return;
+        htmlEl.dataset.hasCursorListener = 'true';
+        htmlEl.addEventListener('mouseenter', onMouseEnter);
+        htmlEl.addEventListener('mouseleave', onMouseLeave);
       });
     };
 
@@ -185,8 +188,10 @@ export const Cursor: React.FC = () => {
 
       const elements = document.querySelectorAll('a, button, .interactive, [data-cursor]');
       elements.forEach(el => {
-        el.removeEventListener('mouseenter', onMouseEnter);
-        el.removeEventListener('mouseleave', onMouseLeave);
+        const htmlEl = el as HTMLElement;
+        htmlEl.removeEventListener('mouseenter', onMouseEnter);
+        htmlEl.removeEventListener('mouseleave', onMouseLeave);
+        delete htmlEl.dataset.hasCursorListener;
       });
     };
   }, []);

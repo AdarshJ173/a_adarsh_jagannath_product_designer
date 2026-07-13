@@ -295,9 +295,10 @@ interface ShaderProps {
 }
 
 const Shader: React.FC<ShaderProps> = ({ source, uniforms, maxFps = 60 }) => {
+    const CanvasComp = Canvas as any;
     return (
-        <Canvas className="absolute inset-0 h-full w-full">
+        <CanvasComp className="absolute inset-0 h-full w-full">
             <ShaderMaterial source={source} uniforms={uniforms} maxFps={maxFps} />
-        </Canvas>
+        </CanvasComp>
     );
 };

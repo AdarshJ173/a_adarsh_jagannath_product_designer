@@ -100,7 +100,7 @@ function App() {
 
       <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         <Navbar />
-        <main className="w-full overflow-hidden">
+        <main className="w-full">
           <Hero />
           <div id="about">
             <About />
