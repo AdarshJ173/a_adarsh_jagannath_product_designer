@@ -34,7 +34,7 @@ export const Hero: React.FC = () => {
       style={{ cursor: 'none', willChange: 'transform' }}
     >
       {/* Dither Background Effect (behind the image) */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
         <Dither
           bgColor={[0.98, 0.98, 0.98]}
           waveColor={[0.85, 0.82, 0.77]}
