@@ -1,126 +1,12 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { TextHoverEffect } from '@/components/ui/text-hover-effect';
 import { FlipWords } from '@/components/ui/flip-words';
-
-// Background images in cycle order
-const BACKGROUNDS = [
-  '/assets/lpg_opt.webp',
-  '/assets/frontAuraR_opt.webp',
-  '/assets/rpngFix_opt.webp',
-];
+import PixelSnow from '@/components/ui/PixelSnow';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const topBgRef = useRef<HTMLDivElement>(null);
-  const bottomBgRef = useRef<HTMLDivElement>(null);
-
-  // Initialize from localStorage or default to 0
-  const [currentBgIndex, setCurrentBgIndex] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('hero-bg-index');
-      return saved ? parseInt(saved, 10) : 0;
-    }
-    return 0;
-  });
-
-  const currentBgIndexRef = useRef(currentBgIndex);
-  const animationRef = useRef<gsap.core.Tween | null>(null);
-
-  // Sync ref with state
-  useEffect(() => {
-    currentBgIndexRef.current = currentBgIndex;
-    localStorage.setItem('hero-bg-index', currentBgIndex.toString());
-  }, [currentBgIndex]);
-
-  // Preload images
-  useEffect(() => {
-    BACKGROUNDS.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
-
-  // Set initial background images (Only once on mount/state init via ref to avoid React render conflicts)
-  useEffect(() => {
-    const bottomBg = bottomBgRef.current;
-    const topBg = topBgRef.current;
-
-    if (bottomBg && topBg) {
-      // Set initial styles based on saved index
-      const currentIndex = currentBgIndexRef.current;
-      const nextIndex = (currentIndex + 1) % BACKGROUNDS.length;
-
-      bottomBg.style.backgroundImage = `url(${BACKGROUNDS[currentIndex]})`;
-      topBg.style.backgroundImage = `url(${BACKGROUNDS[nextIndex]})`;
-    }
-  }, []); // Run once on mount to set initial DOM state
-
-  // Handle click to trigger radial reveal from click position - NO BLOCKING
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    // Ignore clicks on interactive elements (buttons, links, nav)
-    const target = e.target as HTMLElement;
-    if (
-      target.closest('button') ||
-      target.closest('a') ||
-      target.closest('nav') ||
-      target.closest('.interactive')
-    ) {
-      return;
-    }
-
-    // Get click position as percentage
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
-    const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
-
-    const topBg = topBgRef.current;
-    const bottomBg = bottomBgRef.current;
-
-    if (topBg && bottomBg) {
-      // Kill any existing animation immediately
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-
-      // Get next background index (cycle through 0 → 1 → 2 → 0 → ...)
-      const nextBgIndex = (currentBgIndexRef.current + 1) % BACKGROUNDS.length;
-      const nextImage = BACKGROUNDS[nextBgIndex]; // The image we are revealing
-      const currentImage = BACKGROUNDS[currentBgIndexRef.current]; // The image currently visible
-
-      // Ensure bottom layer is the current visible image
-      bottomBg.style.backgroundImage = `url(${currentImage})`;
-
-      // Prepare top layer with the NEW image (starting hidden at click pos)
-      topBg.style.backgroundImage = `url(${nextImage})`;
-      gsap.set(topBg, { clipPath: `circle(0% at ${xPercent}% ${yPercent}%)` });
-
-      // Update index immediately for next click logic & dots
-      setCurrentBgIndex(nextBgIndex);
-
-      // Animate radial reveal from click position
-      animationRef.current = gsap.to(topBg, {
-        clipPath: `circle(200% at ${xPercent}% ${yPercent}%)`,
-        duration: 1.5,
-        ease: 'power2.out',
-        onComplete: () => {
-          // After animation, make the bottom layer the new image
-          // so it persists behind the next reveal
-          bottomBg.style.backgroundImage = `url(${nextImage})`;
-
-          // Preload/Setup top layer for *next* interaction (optional, but good for logic)
-          // Actually, we don't strictly need to set topBg here because handleClick sets it,
-          // but keeping them consistent is fine.
-          const nextNextIndex = (nextBgIndex + 1) % BACKGROUNDS.length;
-          topBg.style.backgroundImage = `url(${BACKGROUNDS[nextNextIndex]})`;
-          gsap.set(topBg, { clipPath: 'circle(0% at 50% 50%)' }); // Reset clip
-        }
-      });
-    }
-  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -146,35 +32,28 @@ export const Hero: React.FC = () => {
       ref={containerRef}
       className="relative h-screen flex items-center justify-center px-6 overflow-hidden pt-20"
       style={{ cursor: 'none', willChange: 'transform' }}
-      onClick={handleClick}
-      data-cursor="TAP ME"
-      data-cursor-type="hero"
-      data-hero-index={currentBgIndex}
-      data-total-images={BACKGROUNDS.length}
     >
-      {/* Bottom Background Layer (persistent) */}
+      {/* Background Image Layer */}
       <div
-        ref={bottomBgRef}
         className="absolute inset-0 z-0 bg-[65%_center] md:bg-center"
         style={{
-          // backgroundImage removed here to prevent React overrides
+          backgroundImage: "url('/assets/hero_bg.png')",
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          cursor: 'none',
         }}
       />
 
-      {/* Top Background Layer (animated reveal) */}
-      <div
-        ref={topBgRef}
-        className="absolute inset-0 z-[1] bg-[65%_center] md:bg-center"
-        style={{
-          // backgroundImage removed here to prevent React overrides
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          clipPath: 'circle(0% at 50% 50%)',
-          cursor: 'none',
-        }}
+      {/* Pixel Snow Particle Background */}
+      <PixelSnow 
+        color="#121212"
+        flakeSize={0.012}
+        minFlakeSize={1.5}
+        pixelResolution={220}
+        speed={1.0}
+        density={0.25}
+        direction={125}
+        brightness={1}
+        className="z-[1] pointer-events-none"
       />
 
       <div className="container mx-auto relative z-10 flex flex-col items-center md:items-start md:justify-center h-full w-full" style={{ cursor: 'none' }}>
@@ -198,7 +77,7 @@ export const Hero: React.FC = () => {
 
           <div className="overflow-hidden w-full">
             <p className="hero-text-line text-base sm:text-lg md:text-xl text-muted max-w-xl md:max-w-2xl leading-relaxed mx-auto md:mx-0" style={{ cursor: 'none' }}>
-              I turn complex visions into production-ready products.<br className="hidden md:block" />
+              I turn complex visions into production-ready reality.<br className="hidden md:block" />
               Obsessed with UX, authenticity, and building things<br className="hidden md:block" />
               that make life easier —{' '}
               <span className="relative inline-block md:inline whitespace-normal md:whitespace-nowrap mt-2 md:mt-0">
